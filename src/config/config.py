@@ -5,13 +5,13 @@ CRON_SCHEDULES_CONFIG = {
     # coalesce
 }
 
-
 LOG_CONFIG = {
     "version": 1,
     "disable_existing_loggers": True,
     "formatters": {
         "simple": {
-            "format": "%(asctime)s %(levelname)-7s - %(message)s - [%(filename)s:%(lineno)d:%(funcName)s]",
+            "format":
+            "%(asctime)s %(levelname)-7s - %(message)s - [%(filename)s:%(lineno)d:%(funcName)s]",
         },
     },
     "handlers": {
@@ -26,7 +26,7 @@ LOG_CONFIG = {
             "level": "DEBUG",
             "formatter": "simple",
             "filename": "./logs/monitor.log",
-            "maxBytes": 104857600, # 100MB
+            "maxBytes": 104857600,  # 100MB
             "backupCount": 7,
             "encoding": "utf8"
         },

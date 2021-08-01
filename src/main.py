@@ -20,7 +20,7 @@ def start_monitor():
         s = BackgroundScheduler(timezone='MST', job_defaults=serviceConfig.CRON_SCHEDULES_CONFIG)
         for job in jobs:
             s.add_job(
-                (commonUtils.get_lib_func_object(*commonUtils.get_cron_job(job['job'])).run), 
+                (commonUtils.get_lib_func_object(*commonUtils.get_cron_job(job['job']))().run), 
                 job_type, 
                 **job['time']
                 )
