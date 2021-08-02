@@ -154,7 +154,7 @@ class GateIoAllMarkets(CronJob):
         """
         :param local_market_list, source data
         :param remote_market_list, source data
-        :returns: list<marketAddress>
+        :returns: list<pairName>
         """
         t1 = pydash.map_(local_market_list, 'pair')
         t2 = pydash.map_(remote_market_list, 'pair')
@@ -163,7 +163,7 @@ class GateIoAllMarkets(CronJob):
     
     def save_market_list(self, market_list: list):
         with open(self.market_list_save_file, 'w') as f:
-            f.write(json.dumps(market_list, indent=2))
+            f.write(json.dumps(market_list))
             
     
     def generate_message(self, new_pairs: list, source_market_list: list) -> str:
@@ -175,6 +175,130 @@ class GateIoAllMarkets(CronJob):
         msg = '**Gate.io Add New Market Pair** \n\n'
         for item in markets:
             msg += f"pair: {item['pair']}, name: {item['name']}, symbol: {item['symbol']} \n\n"
+        return msg
+    
+    def run(self):
+        local_market_list = self.load_local_market_list()
+        remote_market_list = self.load_remote_market_list()
+        if len(local_market_list) == 0:
+            self.save_market_list(remote_market_list)
+            return
+        new_pairs = self.check_has_new_coin(local_market_list, remote_market_list)
+        if len(new_pairs) > 0:
+            msg = self.generate_message(new_pairs, remote_market_list)
+            self.send_message(msg)
+        self.save_market_list(remote_market_list)
+        
+        
+class BinanceAllMarkets(CronJob):
+    """
+    Site: https://www.binance.com
+    """
+    def __init__(self):
+        super(BinanceAllMarkets, self).__init__()
+        self.market_list_save_file = './data/binanceAllMarkets.json'
+        self.market_json_url = 'https://www.binance.com/bapi/margin/v1/public/isolated-margin/pair/listed'
+
+    def load_local_market_list(self) -> list:
+        t = os.path.isfile(self.market_list_save_file)
+        if not t:
+            return []
+        with open(self.market_list_save_file, 'r') as f:
+            return json.load(f)
+
+    def load_remote_market_list(self) -> list:
+        response = requests.get(self.market_json_url, headers=http_headers)
+        if response.status_code != 200:
+            raise requests.RequestException
+        return response.json()['data']
+
+    def check_has_new_coin(self, local_market_list: list, remote_market_list: list) -> list:
+        """
+        :param local_market_list, source data
+        :param remote_market_list, source data
+        :returns: list<pairName>
+        """
+        t1 = pydash.map_(local_market_list, 'symbol')
+        t2 = pydash.map_(remote_market_list, 'symbol')
+        r = set(t2) - set(t1)
+        return list(r)
+    
+    def save_market_list(self, market_list: list):
+        with open(self.market_list_save_file, 'w') as f:
+            f.write(json.dumps(market_list))
+            
+    
+    def generate_message(self, new_pairs: list, source_market_list: list) -> str:
+        markets = []
+        for pair in new_pairs:
+            s = pydash.find(source_market_list, { "symbol": pair })
+            if s:
+                markets.append(s)
+        msg = '**Binance Add New Market Pair** \n\n'
+        for item in markets:
+            msg += f"pair: {item['symbol']}, symbol: {item['base']}, quote: {item['quote']} \n\n"
+        return msg
+    
+    def run(self):
+        local_market_list = self.load_local_market_list()
+        remote_market_list = self.load_remote_market_list()
+        if len(local_market_list) == 0:
+            self.save_market_list(remote_market_list)
+            return
+        new_pairs = self.check_has_new_coin(local_market_list, remote_market_list)
+        if len(new_pairs) > 0:
+            msg = self.generate_message(new_pairs, remote_market_list)
+            self.send_message(msg)
+        self.save_market_list(remote_market_list)
+        
+        
+class OKexAllMarkets(CronJob):
+    """
+    Site: https://www.okex.com
+    """
+    def __init__(self):
+        super(OKexAllMarkets, self).__init__()
+        self.market_list_save_file = './data/okexAllMarkets.json'
+        self.market_json_url = 'https://www.okex.com/api/v5/public/instruments?instType=SPOT'
+
+    def load_local_market_list(self) -> list:
+        t = os.path.isfile(self.market_list_save_file)
+        if not t:
+            return []
+        with open(self.market_list_save_file, 'r') as f:
+            return json.load(f)
+
+    def load_remote_market_list(self) -> list:
+        response = requests.get(self.market_json_url, headers=http_headers)
+        if response.status_code != 200:
+            raise requests.RequestException
+        return response.json()['data']
+
+    def check_has_new_coin(self, local_market_list: list, remote_market_list: list) -> list:
+        """
+        :param local_market_list, source data
+        :param remote_market_list, source data
+        :returns: list<pairName>
+        """
+        t1 = pydash.map_(local_market_list, 'instId')
+        t2 = pydash.map_(remote_market_list, 'instId')
+        r = set(t2) - set(t1)
+        return list(r)
+    
+    def save_market_list(self, market_list: list):
+        with open(self.market_list_save_file, 'w') as f:
+            f.write(json.dumps(market_list))
+            
+    
+    def generate_message(self, new_pairs: list, source_market_list: list) -> str:
+        markets = []
+        for pair in new_pairs:
+            s = pydash.find(source_market_list, { "instId": pair })
+            if s:
+                markets.append(s)
+        msg = '**OKEX Add New Market Pair** \n\n'
+        for item in markets:
+            msg += f"pair: {item['instId']}, symbol: {item['baseCcy']}, quote: {item['quoteCcy']} \n\n"
         return msg
     
     def run(self):

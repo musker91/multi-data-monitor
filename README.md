@@ -3,11 +3,11 @@ DEX/CEX/ Chain Data Monitoring
 
 **Monitoring TODO**
 > new coin
-- [X] Gate.io
+- [x] Gate.io
 - [ ] MXC
-- [ ] Binance
+- [x] Binance
 - [ ] Huobi
-- [ ] OKEX
+- [x] OKEX
 - [ ] KuCoin
 - [ ] Coinbase Pro
 - [ ] ZB

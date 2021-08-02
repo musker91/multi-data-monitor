@@ -28,5 +28,21 @@ INTERAVL_CRON_JOBS = [
             # "seconds": 5
             "minutes": 5
         }
-    }
+    },
+    # {
+    #     "name": "Binance New Coin Market",
+    #     "job": "monitor.new_coin.BinanceAllMarkets",
+    #     "time": {
+    #         # "seconds": 5
+    #         "minutes": 5
+    #     }
+    # },
+    # {
+    #     "name": "OkEX New Coin Market",
+    #     "job": "monitor.new_coin.OKexAllMarkets",
+    #     "time": {
+    #         # "seconds": 5
+    #         "minutes": 5
+    #     }
+    # }
 ]
