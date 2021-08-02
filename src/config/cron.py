@@ -10,7 +10,15 @@ INTERAVL_CRON_JOBS = [
         "job": "monitor.new_coin.CherrySwapWhiteTokenList",
         "time": {
             # "seconds": 100
-            "minutes": 15
+            "minutes": 5
+        }
+    },
+    {
+        "name": "KSwap White Token List New Coin",
+        "job": "monitor.new_coin.KSwapWhiteTokenList",
+        "time": {
+            # "seconds": 100
+            "minutes": 5
         }
     }
 ]
