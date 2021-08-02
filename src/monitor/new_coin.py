@@ -41,7 +41,7 @@ class CherrySwapWhiteTokenList(CronJob):
     
     def save_token_list(self, token_list: list):
         with open(self.token_list_save_file, 'w') as f:
-            f.write(json.dumps(token_list, indent=2))
+            f.write(json.dumps(token_list))
             
     
     def generate_message(self, new_tokens: list, source_token_list: list) -> str:
