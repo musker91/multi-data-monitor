@@ -1,7 +1,6 @@
 import importlib
 
 def get_lib_func_object(lib_name: str, func_name: str = ''):
-    print(lib_name)
     lib = importlib.import_module(lib_name)
     if not str:
         return lib

@@ -5,6 +5,15 @@ CRON_SCHEDULES_CONFIG = {
     # coalesce
 }
 
+# message
+DINGDING_APi = 'https://oapi.dingtalk.com/robot/send?access_token='
+DINGDING_RECIVE_LIST = [
+    {
+        'title': '',
+        'token': ''
+    }
+]
+
 LOG_CONFIG = {
     "version": 1,
     "disable_existing_loggers": True,
@@ -33,6 +42,6 @@ LOG_CONFIG = {
     },
     "root": {
         "level": "INFO",
-        "handlers": ["console"],
+        "handlers": ["console", "file_handler"],
     }
 }
