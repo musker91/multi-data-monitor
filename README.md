@@ -3,7 +3,7 @@ DEX/CEX/ Chain Data Monitoring
 
 **Monitoring TODO**
 > new coin
-- [ ] Gate.io
+- [X] Gate.io
 - [ ] MXC
 - [ ] Binance
 - [ ] Huobi
@@ -11,3 +11,7 @@ DEX/CEX/ Chain Data Monitoring
 - [ ] KuCoin
 - [ ] Coinbase Pro
 - [ ] ZB
+
+> White token List New Coin
+- [x] Cherry Swap
+- [x] Kswap 

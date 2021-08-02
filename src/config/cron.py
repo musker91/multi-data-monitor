@@ -20,5 +20,13 @@ INTERAVL_CRON_JOBS = [
             # "seconds": 100
             "minutes": 5
         }
+    },
+    {
+        "name": "Gate.io New Coin Market",
+        "job": "monitor.new_coin.GateIoAllMarkets",
+        "time": {
+            # "seconds": 5
+            "minutes": 5
+        }
     }
 ]
